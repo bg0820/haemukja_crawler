@@ -1,20 +1,32 @@
 package Crawler;
 
-import org.jsoup.Jsoup;
 import java.io.IOException;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class HaemukjaCrawler {
 	private static final String RECIPE_LIST_URL = "https://haemukja.com/recipes?utf8=%E2%9C%93";
 
 
-	public void getRecordCnt() {
+	public int getRecipeRecordCnt() throws IOException {
 
+		Response resp = getResponse(RECIPE_LIST_URL);
+
+		if (resp.statusCode() == 200) {
+			Document doc = resp.parse();
+
+			String cnt = doc.selectFirst("div[class='tit_area']").selectFirst("strong").text();
+
+			return Integer.parseInt(cnt.replaceAll(",", ""));
+		}
+
+		return -1;
 	}
 
-	private Response getResponse() throws IOException {
-		return Jsoup.connect(RECIPE_LIST_URL).method(Method.GET).header("Cache-Control", "no-cache")
+	private Response getResponse(String url) throws IOException {
+		return Jsoup.connect(url).method(Method.GET).header("Cache-Control", "no-cache")
 				.header("Connection", "keep-alive").header("Host", "haemukja.com")
 				.header("Referer", "https://haemukja.com/")
 				.userAgent(
