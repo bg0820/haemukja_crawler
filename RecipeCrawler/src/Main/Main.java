@@ -19,7 +19,8 @@ public class Main {
 				for(int j = 0; j< recipeList.size(); j++)
 				{
 					Recipe recipe = hc.getRecipeInfo(recipeList.get(j));
-					System.out.println(recipe.toString());
+			
+					//System.out.println(recipe.toString());
 					Thread.sleep(50);
 				}
 				
