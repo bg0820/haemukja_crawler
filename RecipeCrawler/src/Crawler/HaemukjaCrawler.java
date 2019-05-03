@@ -1,15 +1,36 @@
 package Crawler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class HaemukjaCrawler {
-	private static final String RECIPE_LIST_URL = "https://haemukja.com/recipes?utf8=%E2%9C%93";
+	private static final String ROOT_URL = "https://haemukja.com";
+	private static final String RECIPE_LIST_URL = ROOT_URL + "/recipes?utf8=%E2%9C%93";
 
 
+	public ArrayList<String> getRecipeList(int page) throws IOException {
+		Response resp = getResponse(RECIPE_LIST_URL + "&page=" + page);
+		ArrayList<String> resultList = new ArrayList<String>();
+
+		if (resp.statusCode() == 200) {
+			Document doc = resp.parse();
+
+			Elements liList = doc.selectFirst("ul[class='lst_recipe']").select("li");
+			for (int i = 0; i < liList.size(); i++) {
+				resultList.add(liList.get(i).selectFirst("a").attr("href"));
+			}
+		}
+
+		return resultList;
+	}
+
+	// return ceil(value / 12(한 페이지 레코드 개수)) = page 개수
 	public int getRecipeRecordCnt() throws IOException {
 
 		Response resp = getResponse(RECIPE_LIST_URL);
