@@ -20,10 +20,10 @@ public class Main {
 				{
 					Recipe recipe = hc.getRecipeInfo(recipeList.get(j));
 					System.out.println(recipe.toString());
-					Thread.sleep(100);
+					Thread.sleep(50);
 				}
 				
-				Thread.sleep(300);
+				Thread.sleep(100);
 			}
 			
 		} catch (IOException e) {

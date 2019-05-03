@@ -46,7 +46,6 @@ public class HaemukjaCrawler {
 			}
 
 
-
 			for (int i = 0; i < btmLis.size(); i++) {
 				Element liItem = btmLis.get(i);
 				Ingredient ingredient = new Ingredient();
