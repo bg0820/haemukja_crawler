@@ -1,6 +1,6 @@
 package Crawler;
 
-public class CrawlerThread extends Thread{
+public class CollectionThread extends Thread{
 
 	@Override
 	public void run() {
