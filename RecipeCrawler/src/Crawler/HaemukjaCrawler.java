@@ -15,46 +15,55 @@ public class HaemukjaCrawler {
 	private static final String ROOT_URL = "https://haemukja.com";
 	private static final String RECIPE_LIST_URL = ROOT_URL + "/recipes?utf8=%E2%9C%93";
 
-	
-	public Recipe getRecipeInfo(String hrefURL) throws IOException
-	{
+
+	public Recipe getRecipeInfo(String hrefURL) throws IOException {
 		Response resp = getResponse(ROOT_URL + hrefURL);
-		
+
 		if (resp.statusCode() == 200) {
 			Document doc = resp.parse();
-			
+
 			Element aside = doc.selectFirst("div[class='aside']");
 			Element infoBasic = aside.selectFirst("dl[class='info_basic']");
 			Element btmList = aside.selectFirst("div[class='btm']");
-			
-			Elements infoBasicDD = infoBasic.select("dd");
+
+			Elements infoBasicChild = infoBasic.children();
 			Elements btmLis = btmList.select("li");
-			
+
 			// 0 = cookTime, 1 = 스크랩, 2 = 칼로리
 			Recipe recipe = new Recipe();
 			recipe.setMainTitle(aside.selectFirst("h1").text());
-			recipe.setMainTitle(aside.selectFirst("h1").selectFirst("strong").text());
-			recipe.setCookTime(infoBasicDD.get(0).text());
-			recipe.setKcal(infoBasicDD.get(2).text());
-			
-			for(int i = 0 ; i<btmLis.size(); i++)
-			{
+			recipe.setSubTitle(aside.selectFirst("h1").selectFirst("strong").text());
+
+			if (infoBasicChild.get(0) != null) {
+				if (infoBasicChild.get(0).className().equals("time"))
+					recipe.setCookTime(infoBasicChild.get(1).text());
+			}
+			if (infoBasicChild.size() > 4) {
+				if (infoBasicChild.get(4) != null) {
+					if (infoBasicChild.get(4).className().equals("cal"))
+						recipe.setKcal(infoBasicChild.get(5).text());
+				}
+			}
+
+
+
+			for (int i = 0; i < btmLis.size(); i++) {
 				Element liItem = btmLis.get(i);
 				Ingredient ingredient = new Ingredient();
 				ingredient.setName(liItem.selectFirst("span").text());
-				
-				if(liItem.selectFirst("em") != null)
+
+				if (liItem.selectFirst("em") != null)
 					ingredient.setUnitStr(liItem.selectFirst("em").text());
-				
+
 				recipe.addIngredientList(ingredient);
 			}
-			
-			return recipe;			
+
+			return recipe;
 		}
-		
+
 		return null;
 	}
-	
+
 	public ArrayList<String> getRecipeList(int page) throws IOException {
 		Response resp = getResponse(RECIPE_LIST_URL + "&page=" + page);
 		ArrayList<String> resultList = new ArrayList<String>();

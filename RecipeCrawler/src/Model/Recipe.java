@@ -52,5 +52,21 @@ public class Recipe {
 		return ingredientList.get(idx);
 	}
 
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("======================\r\n");
+		sb.append("메인 이름 : " + mainTitle + "\r\n");
+		sb.append("서브 이름 : " + subTitle+ "\r\n");
+		sb.append("조리 시간 : " + cookTime+ "\r\n");
+		sb.append("칼로리 : " + kcal+ "\r\n");
+		sb.append("---------재료---------\r\n");
+		for(int i = 0 ;  i< ingredientList.size(); i++)
+			sb.append(ingredientList.get(i).toString()+ "\r\n");
+		sb.append("======================\r\n");
+		
+		return sb.toString();
+	}
 
+	
 }

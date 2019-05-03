@@ -21,5 +21,12 @@ public class Ingredient {
 		this.unitStr = unitStr;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "[name=" + name + ", unitStr=" + unitStr + "]"; 
+	}
+
+	
 
 }
