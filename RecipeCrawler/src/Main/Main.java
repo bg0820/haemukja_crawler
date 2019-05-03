@@ -15,8 +15,13 @@ public class Main {
 			for(int i = 1 ; i <= lastPageCnt; i++)
 			{
 				ArrayList<String> recipeList = hc.getRecipeList(i);
-				System.out.println(recipeList.size());
-				Thread.sleep(500);
+				for(int j = 0; j< recipeList.size(); j++)
+				{
+					hc.getRecipeInfo(recipeList.get(j));
+					Thread.sleep(100);
+				}
+				
+				Thread.sleep(300);
 			}
 			
 		} catch (IOException e) {
