@@ -9,7 +9,23 @@ public class Recipe {
 
 	private String cookTime;
 	private String kcal;
+	private int minServing; // 인분
+	private int maxServing;
+
 	private ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
+	private ArrayList<Nutrition> nutritionList = new ArrayList<Nutrition>();
+
+	private String methodHTML;
+
+
+
+	public String getMethodHTML() {
+		return methodHTML;
+	}
+
+	public void setMethodHTML(String methodHTML) {
+		this.methodHTML = methodHTML;
+	}
 
 	public String getMainTitle() {
 		return mainTitle;
@@ -51,17 +67,43 @@ public class Recipe {
 		return ingredientList.get(idx);
 	}
 
+	public void addNutritionList(Nutrition nutrition) {
+		nutritionList.add(nutrition);
+	}
+
+	public Nutrition getNutritionList(int idx) {
+		return nutritionList.get(idx);
+	}
+
+
+	public int getMinServing() {
+		return minServing;
+	}
+
+	public void setMinServing(int minServing) {
+		this.minServing = minServing;
+	}
+
+	public int getMaxServing() {
+		return maxServing;
+	}
+
+	public void setMaxServing(int maxServing) {
+		this.maxServing = maxServing;
+	}
+
+
 	public void anaylze() throws Exception {
 		System.out.println("========================");
 		for (int i = 0; i < ingredientList.size(); i++) {
-			//9HangleAnalyze.getInstance().getKeyWord(ingredientList.get(i).getUnitStr());
+			// 9HangleAnalyze.getInstance().getKeyWord(ingredientList.get(i).getUnitStr());
 			HangleAnalyze.getInstance().analyze(ingredientList.get(i).getUnitStr());
 		}
 		System.out.println("========================");
 	}
-	
-	public void printIngredient()
-	{
+
+
+	public void printIngredient() {
 		for (int i = 0; i < ingredientList.size(); i++) {
 			System.out.println(ingredientList.get(i).getUnitStr());
 		}
@@ -86,6 +128,7 @@ public class Recipe {
 
 		return sb.toString();
 	}
+
 
 
 }

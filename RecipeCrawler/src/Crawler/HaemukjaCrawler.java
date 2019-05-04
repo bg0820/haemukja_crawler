@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import Model.Ingredient;
+import Model.Nutrition;
 import Model.Recipe;
 
 public class HaemukjaCrawler {
@@ -21,16 +22,40 @@ public class HaemukjaCrawler {
 
 		if (resp.statusCode() == 200) {
 			Document doc = resp.parse();
+			Recipe recipe = new Recipe();
 
 			Element aside = doc.selectFirst("div[class='aside']");
 			Element infoBasic = aside.selectFirst("dl[class='info_basic']");
 			Element btmList = aside.selectFirst("div[class='btm']");
 
+			System.out.println(hrefURL);
+			String servingStr = btmList.selectFirst("div[class='dropdown']").text().split("인")[0];
+			if (servingStr.contains("~")) {
+				String[] servingSplit = servingStr.split("\\~");
+				recipe.setMinServing(Integer.parseInt(servingSplit[0]));
+				recipe.setMaxServing(Integer.parseInt(servingSplit[1]));
+			} else if (servingStr.contains("-")) {
+				String[] servingSplit = servingStr.split("\\-");
+				// 2-3큰술인 기준 로 표시된 곳이 있음... 어케 하면 좋을까
+				try {
+					recipe.setMinServing(Integer.parseInt(servingSplit[0]));
+					recipe.setMaxServing(Integer.parseInt(servingSplit[1]));
+				} catch (NumberFormatException e) {
+					recipe.setMinServing(1);
+					recipe.setMaxServing(1);
+				}
+			} else {
+				if (!servingStr.equals(""))
+					recipe.setMinServing(Integer.parseInt(servingStr));
+			}
+
+
+
 			Elements infoBasicChild = infoBasic.children();
 			Elements btmLis = btmList.select("li");
 
 			// 0 = cookTime, 1 = 스크랩, 2 = 칼로리
-			Recipe recipe = new Recipe();
+
 			recipe.setMainTitle(aside.selectFirst("h1").text());
 			recipe.setSubTitle(aside.selectFirst("h1").selectFirst("strong").text());
 
@@ -46,6 +71,7 @@ public class HaemukjaCrawler {
 			}
 
 
+			// 재료 목록 가져오기
 			for (int i = 0; i < btmLis.size(); i++) {
 				Element liItem = btmLis.get(i);
 				Ingredient ingredient = new Ingredient();
@@ -56,6 +82,27 @@ public class HaemukjaCrawler {
 
 				recipe.addIngredientList(ingredient);
 			}
+
+			// 영양 정보가 있을때
+			if (doc.selectFirst("div[class='nutrition']") != null) {
+				Elements nutritionLiList =
+						doc.selectFirst("div[class='nutrition']").selectFirst("ul").children();
+
+				// 영양정보 추가
+				for (int i = 0; i < nutritionLiList.size(); i++) {
+					Element nutriLi = nutritionLiList.get(i);
+					Nutrition nutrition = new Nutrition();
+					nutrition.setName(nutriLi.attr("data-info"));
+					String[] dataText = nutriLi.attr("data-text").split("<span>");
+					String value = dataText[0];
+					String valueUnit = dataText[1].split("</span>")[0];
+					nutrition.setValue(Double.parseDouble(dataText[0]));
+					nutrition.setValueUnit(valueUnit);
+					recipe.addNutritionList(nutrition);
+				}
+			}
+
+			recipe.setMethodHTML(doc.selectFirst("ol[class='lst_step']").html());
 
 			return recipe;
 		}
