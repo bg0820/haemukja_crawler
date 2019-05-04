@@ -24,7 +24,7 @@ public class Ingredient {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return unitStr;//"[name=" + name + ", unitStr=" + unitStr + "]"; 
+		return "[name=" + name + ", unitStr=" + unitStr + "]"; 
 	}
 
 	

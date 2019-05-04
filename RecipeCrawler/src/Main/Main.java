@@ -2,12 +2,16 @@ package Main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import Analyze.HangleAnalyze;
 import Crawler.HaemukjaCrawler;
 import Model.Recipe;
 
 public class Main {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
+		// first init
+		HangleAnalyze.getInstance().initilze();
+
 		HaemukjaCrawler hc = new HaemukjaCrawler();
 		try {
 			int totalCnt = hc.getRecipeRecordCnt();
@@ -20,7 +24,7 @@ public class Main {
 				{
 					Recipe recipe = hc.getRecipeInfo(recipeList.get(j));
 			
-					//System.out.println(recipe.toString());
+					recipe.anaylze();
 					Thread.sleep(50);
 				}
 				

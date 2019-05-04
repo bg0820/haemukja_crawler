@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import Analyze.HangleAnalyze;
 
 public class Recipe {
 	private String mainTitle;
@@ -42,33 +43,49 @@ public class Recipe {
 		this.kcal = kcal;
 	}
 
-	public void addIngredientList(Ingredient ing)
-	{
+	public void addIngredientList(Ingredient ing) {
 		ingredientList.add(ing);
 	}
-	
-	public Ingredient getIngredientList(int idx)
-	{
+
+	public Ingredient getIngredientList(int idx) {
 		return ingredientList.get(idx);
+	}
+
+	public void anaylze() throws Exception {
+		System.out.println("========================");
+		for (int i = 0; i < ingredientList.size(); i++) {
+			//9HangleAnalyze.getInstance().getKeyWord(ingredientList.get(i).getUnitStr());
+			HangleAnalyze.getInstance().analyze(ingredientList.get(i).getUnitStr());
+		}
+		System.out.println("========================");
+	}
+	
+	public void printIngredient()
+	{
+		for (int i = 0; i < ingredientList.size(); i++) {
+			System.out.println(ingredientList.get(i).getUnitStr());
+		}
 	}
 
 	@Override
 	public String toString() {
-		
+
 		StringBuffer sb = new StringBuffer();
-		/*
+
 		sb.append("======================\r\n");
 		sb.append("메인 이름 : " + mainTitle + "\r\n");
-		sb.append("서브 이름 : " + subTitle+ "\r\n");
-		sb.append("조리 시간 : " + cookTime+ "\r\n");
-		sb.append("칼로리 : " + kcal+ "\r\n");
-		sb.append("---------재료---------\r\n");*/
-		for(int i = 0 ;  i< ingredientList.size(); i++)
-			sb.append(ingredientList.get(i).toString()+ "\r\n");
-		/*sb.append("======================\r\n");
-		*/
+		sb.append("서브 이름 : " + subTitle + "\r\n");
+		sb.append("조리 시간 : " + cookTime + "\r\n");
+		sb.append("칼로리 : " + kcal + "\r\n");
+		sb.append("---------재료---------\r\n");
+		for (int i = 0; i < ingredientList.size(); i++) {
+			sb.append(ingredientList.get(i).toString() + "\r\n");
+		}
+
+		sb.append("======================\r\n");
+
 		return sb.toString();
 	}
 
-	
+
 }
