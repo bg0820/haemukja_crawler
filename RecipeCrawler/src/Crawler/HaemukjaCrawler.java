@@ -56,8 +56,8 @@ public class HaemukjaCrawler {
 
 			// 0 = cookTime, 1 = 스크랩, 2 = 칼로리
 
-			recipe.setMainTitle(aside.selectFirst("h1").text());
-			recipe.setSubTitle(aside.selectFirst("h1").selectFirst("strong").text());
+			recipe.setMainTitle(aside.selectFirst("h1").selectFirst("strong").text());
+			recipe.setSubTitle(aside.selectFirst("h1").text());
 
 			if (infoBasicChild.get(0) != null) {
 				if (infoBasicChild.get(0).className().equals("time"))

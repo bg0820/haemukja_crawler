@@ -2,7 +2,6 @@ package Analyze;
 
 import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 import org.snu.ids.kkma.ma.CharSetType;
 import org.snu.ids.kkma.ma.Eojeol;
 import org.snu.ids.kkma.ma.MExpression;
@@ -52,6 +51,7 @@ public class HangleAnalyze {
 
 		ArrayDeque<Morpheme> pickUpQueue = new ArrayDeque<Morpheme>();
 
+		
 		Sentence st = stl.get(0);
 
 		for (int i = 0; i < st.size(); i++) {
@@ -95,7 +95,11 @@ public class HangleAnalyze {
 				num++;
 
 			} else if (charMorp.getCharSet() == CharSetType.SYMBOL)
-				symbol = charMorp.getString();
+				if(charMorp.getTag().equals("SS"))
+				{
+					unitStr+= charMorp.getString();
+				} else
+					symbol = charMorp.getString();
 			else {
 				unitStr += charMorp.getString();
 			}

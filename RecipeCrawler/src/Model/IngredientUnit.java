@@ -18,9 +18,10 @@ public class IngredientUnit {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 
-		if (symbol.equals("~")) {
+		/*if (symbol.equals("~")) {
 			result = min + " ~ " + max;
-		} else if (symbol.equals("/")) {
+		} else */
+		if (symbol.equals("/")) {
 			result = String.valueOf(min
 					/ max);
 		}
@@ -53,7 +54,7 @@ public class IngredientUnit {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "[min=" + min + ", max=" + max + ", result=" + result + ", unitStr=" + unitStr + "]";
+		return "[min=" + min + ", max=" + max + ", symbol=" + symbol + ", result=" + result + ", unitStr=" + unitStr + "]";
 
 
 	}
